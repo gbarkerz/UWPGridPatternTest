@@ -27,17 +27,15 @@ namespace GridTest
             // Put some meaningless numbers in each square for demo purposes.
             for (int x = 0; x < 9; x++)
             {
-                for (int y = x; y < x + 9; y++)
+                for (int y = 0; y < 9; y++)
                 {
-                    int squareNumber = (y % 9) + 1;
-
                     int randomNumber = random.Next(3);
 
                     testList.Add(new TestItem()
                     {
                         X = x,
                         Y = y,
-                        Name = squareNumber.ToString(),
+                        Name = (y + 1).ToString(),
                         NumberShown = (randomNumber % 3 == 0)
                     });
 
