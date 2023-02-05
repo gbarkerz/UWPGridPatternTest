@@ -1,12 +1,13 @@
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Automation.Peers;
 
 namespace GridTest
 {
     public sealed partial class UserGridControl : UserControl
     {
         private TestViewModel viewModel;
+        private string demoNotificationId = "33188EE9-B3C7-4B76-9968-938A7E424FDC";
 
         public UserGridControl()
         {
@@ -27,48 +28,24 @@ namespace GridTest
             if (item != null)
             {
                 item.NumberShown = !item.NumberShown;
-            }
-        }
 
-        private void TestGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            // When an item becomes selected in the grid, move focus to the inner element
-            // which supports the UIA GridItem pattern.
-            
-            GridViewItem selectedGridViewItem = null;
+                // Because keyboard focus doesn't change during this operation, by default a 
+                // screen reader won't announce anything at all. As such, raise an event in 
+                // order to encourage screen readers to announce the result of the action.
 
-            var grid = sender as GridView;
-            if (grid != null)
-            {
-                var selectedGridItem = grid.SelectedItem as TestItem;
-                if (selectedGridItem != null)
+                var itemContainer = (sender as TestGridView).ContainerFromItem(item);
+
+                var itemContainerPeer = FrameworkElementAutomationPeer.FromElement(itemContainer as UIElement);
+                if (itemContainerPeer != null)
                 {
-                    selectedGridViewItem = TestGridView.GridViewDemo.ContainerFromItem(selectedGridItem) as GridViewItem;
-                }
-            }
+                    var msg = "Now " + itemContainerPeer.GetName();
 
-            TestGridViewItem testGridViewItem = null;
-            if (selectedGridViewItem != null)
-            {
-                // Find the inner Test grid item which supports the UIA GridItem patten.
-                var selectedGridViewItemChildrenCount = VisualTreeHelper.GetChildrenCount(selectedGridViewItem);
-                if (selectedGridViewItemChildrenCount > 0)
-                {
-                    var listViewItemPresenter = VisualTreeHelper.GetChild(selectedGridViewItem, 0);
-                    if (listViewItemPresenter != null)
-                    {
-                        var listViewItemPresenterChildrenCount = VisualTreeHelper.GetChildrenCount(listViewItemPresenter);
-                        if (listViewItemPresenterChildrenCount > 0)
-                        {
-                            testGridViewItem = VisualTreeHelper.GetChild(listViewItemPresenter, 0) as TestGridViewItem;
-                        }
-                    }
+                    itemContainerPeer.RaiseNotificationEvent(
+                        AutomationNotificationKind.ActionCompleted, 
+                        AutomationNotificationProcessing.ImportantMostRecent,
+                        msg,
+                        demoNotificationId);
                 }
-            }
-
-            if (testGridViewItem != null)
-            {
-                testGridViewItem.Focus(FocusState.Programmatic);
             }
         }
     }

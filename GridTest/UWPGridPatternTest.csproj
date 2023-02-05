@@ -123,6 +123,10 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestGridDataTemplateSelector.cs" />
+    <Compile Include="TestGridViewAutomationPeer.cs" />
+    <Compile Include="TestGridViewItem.cs" />
+    <Compile Include="TestGridViewItemAutomationPeer.cs" />
     <Compile Include="TestVM.cs" />
     <Compile Include="TestGridView.cs" />
     <Compile Include="TestItem.cs" />

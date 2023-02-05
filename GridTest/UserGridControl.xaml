@@ -1,50 +1,56 @@
-﻿<UserControl
-    x:Class="GridTest.UserGridControl"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:GridTest"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:converters="using:Microsoft.Toolkit.Uwp.UI.Converters"    
-    mc:Ignorable="d">
+﻿<UserControl x:Class="GridTest.UserGridControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="using:Microsoft.Toolkit.Uwp.UI.Converters"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="using:GridTest"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
 
     <UserControl.Resources>
         <CollectionViewSource x:Name="TestCVS" />
-        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </UserControl.Resources>
 
     <Grid>
 
-        <local:TestGridView x:Name="TestGridView" 
-            ItemsSource="{Binding Source={StaticResource TestCVS}}"
-            IsItemClickEnabled="True" ItemClick="TestGridView_ItemClick"
-            SelectionChanged="TestGridView_SelectionChanged">
+        <local:TestGridView x:Name="TestGridView"
+                            Width="460"
+                            HorizontalAlignment="Left"
+                            IsItemClickEnabled="True"
+                            ItemClick="TestGridView_ItemClick"
+                            ItemsSource="{Binding Source={StaticResource TestCVS}}"
+                            SelectionMode="None">
 
-            <GridView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <VariableSizedWrapGrid
-                        MaximumRowsOrColumns="9">
-                    </VariableSizedWrapGrid>
-                </ItemsPanelTemplate>
-            </GridView.ItemsPanel>
-            
-            <GridView.ItemTemplate>
-                <DataTemplate>
-                    
-                    <!-- Don't hard-code colours like this in a real app. -->
-                    <local:TestGridViewItem IsTabStop="True"
-                        Margin="0" Padding="0"
-                        BorderBrush="Black" BorderThickness="1">
-                        <StackPanel>
-                            <TextBlock TabFocusNavigation="Once"
-                                AutomationProperties.AccessibilityView="Raw"
-                                Visibility="{Binding NumberShown, Mode=OneWay, 
-                                    Converter={StaticResource BoolToVisibilityConverter}}"
-                                Text="{Binding Name}" />
-                        </StackPanel>
-                    </local:TestGridViewItem>
-                </DataTemplate>
-            </GridView.ItemTemplate>
+            <GridView.ItemContainerStyle>
+                <Style TargetType="GridViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                    <Setter Property="Width" Value="50" />
+                    <Setter Property="Height" Value="50" />
+                    <Setter Property="Margin" Value="0" />
+                </Style>
+            </GridView.ItemContainerStyle>
+            <GridView.ItemTemplateSelector>
+                <local:TestGridDataTemplateSelector>
+                    <local:TestGridDataTemplateSelector.CellDataTemplate>
+                        <DataTemplate x:DataType="local:TestItem">
+                            <Border Margin="0"
+                                    Padding="0"
+                                    BorderBrush="Black"
+                                    BorderThickness="1">
+                                <TextBlock x:Name="textBlockValue"
+                                           x:Load="{x:Bind NumberShown, Mode=OneWay}"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           AutomationProperties.AccessibilityView="Raw"
+                                           TabFocusNavigation="Once"
+                                           Text="{x:Bind Name}" />
+                            </Border>
+                        </DataTemplate>
+                    </local:TestGridDataTemplateSelector.CellDataTemplate>
+                </local:TestGridDataTemplateSelector>
+            </GridView.ItemTemplateSelector>
 
         </local:TestGridView>
 

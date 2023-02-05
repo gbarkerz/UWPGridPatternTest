@@ -3,57 +3,39 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace GridTest
-{
-    public class TestItem : INotifyPropertyChanged
-    {
-        public TestItem()
-        {
-        }
-
-        private int index;
-        public int Index
-        {
-            get
-            {
-                return index;
-            }
-            set
-            {
-                SetProperty(ref index, value);
-            }
-        }
-
+namespace GridTest {
+    public class TestItem : INotifyPropertyChanged {
+        
         private string name;
-        public string Name
-        {
-            get
-            {
+        private bool numberShown;
+
+        public TestItem() {
+        }
+
+        public int X { get; set; }
+        public int Y { get; set; }
+
+        public string Name {
+            get {
                 return name;
             }
-            set
-            {
+            set {
                 SetProperty(ref name, value);
             }
         }
 
-        private bool numberShown;
-        public bool NumberShown
-        {
-            get
-            {
+        public bool NumberShown {
+            get {
                 return numberShown;
             }
-            set
-            {
+            set {
                 SetProperty(ref numberShown, value);
             }
         }
 
         protected bool SetProperty<T>(ref T backingStore, T value,
             [CallerMemberName] string propertyName = "",
-            Action onChanged = null)
-        {
+            Action onChanged = null) {
             if (EqualityComparer<T>.Default.Equals(backingStore, value))
                 return false;
 
@@ -64,8 +46,7 @@ namespace GridTest
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
-        {
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = "") {
             var changed = PropertyChanged;
             if (changed == null)
                 return;
