@@ -1,5 +1,8 @@
-﻿using Windows.UI.Xaml.Automation.Peers;
+﻿using Microsoft.Toolkit.Uwp.UI;
+using Windows.UI.Xaml.Automation.Peers;
 using Windows.UI.Xaml.Automation.Provider;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 
 namespace GridTest {
     public class TestGridViewItemAutomationPeer : GridViewItemAutomationPeer, IGridItemProvider
@@ -41,9 +44,14 @@ namespace GridTest {
             get {
                 IRawElementProviderSimple reps = null;
 
-                var peer = FrameworkElementAutomationPeer.FromElement(TestGridView.GridViewDemo);
-                if (peer != null) {
-                    reps = this.ProviderFromPeer(peer);
+                var gridView = _gridViewItem.FindAscendant<GridView>();
+                if (gridView != null)
+                {
+                    var peer = FrameworkElementAutomationPeer.FromElement(gridView);
+                    if (peer != null)
+                    {
+                        reps = this.ProviderFromPeer(peer);
+                    }
                 }
 
                 return reps;

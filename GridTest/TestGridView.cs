@@ -1,5 +1,4 @@
 ﻿using Windows.UI.Xaml.Automation.Peers;
-using Windows.UI.Xaml.Automation;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml;
 
@@ -9,12 +8,7 @@ namespace GridTest {
         // Note: The code through this demo app assumes a grid with fixed column and row counts of 9x9.
         static public int RowColumnCount = 9;
 
-        // For this demo code, use a static for quick access to the GridView.
-        static public TestGridView GridViewDemo;
-
-        public TestGridView()
-        {
-            TestGridView.GridViewDemo = this;
+        public TestGridView() {
         }
 
         protected override DependencyObject GetContainerForItemOverride() {
